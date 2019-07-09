@@ -1,0 +1,102 @@
+﻿@model IEnumerable<GoogleTranslateMVC.Models.Translate>
+@{
+    ViewBag.Title = "Index";
+}
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+
+    // Load the google elements
+    google.load("elements", "1", {
+        packages: "transliteration"
+    });
+
+    function onLoad() {
+        var options = {
+            sourceLanguage:
+                google.elements.transliteration.LanguageCode.ENGLISH,
+            destinationLanguage:
+                [google.elements.transliteration.LanguageCode.HINDI],
+            transliterationEnabled: true
+        }
+
+        var options2 = {
+            sourceLanguage:
+                google.elements.transliteration.LanguageCode.ENGLISH,
+            destinationLanguage:
+                [google.elements.transliteration.LanguageCode.ORIYA],
+            transliterationEnabled: true
+        }
+
+        // Create a Instance on TransliterationControl
+
+        var control = new google.elements.transliteration.TransliterationControl(options);
+        var control2 = new google.elements.transliteration.TransliterationControl(options2);
+
+        control.makeTransliteratable(['HindiLanguage']);
+        control2.makeTransliteratable(['OriyLanguage']);
+    }
+    google.setOnLoadCallback(onLoad);
+
+</script>
+
+
+@using(Html.BeginForm("index","Translate",FormMethod.Post))
+{
+<div class="container" style="padding:10px;">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Google translate</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="text" id="HindiLanguage" name="HindiLanguage" class="form-control" autocomplete="off" />
+                </div>
+                <div class="col-md-3">
+                    <input type="text" id="OriyLanguage" name="OriyLanguage" class="form-control" autocomplete="off" />
+                </div>
+                <div class="col-md-6">
+                    <input type="submit" id="btn_Submit" name="btn_Submit" class="btn btn-primary" value="Submit" />
+                </div>
+            </div>
+            @if (Model != null && Model.Count() != 0)
+            {
+
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Sl#.</th>
+                                    <th>Language1</th>
+                                    <th>Language2</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <th>@item.Id</th>
+                                        <th>@item.HindiLanguage</th>
+                                        <th>@item.OriyLanguage</th>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+            }
+
+
+        </div>
+    </div>
+
+</div>
+}
+
+
